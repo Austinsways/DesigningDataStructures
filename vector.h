@@ -50,8 +50,8 @@ public:
    // Construct
    //
 
-   vector();
-   vector(size_t numElements                );
+    vector();
+    vector(size_t numElements);
    vector(size_t numElements, const T & t   );
    vector(const std::initializer_list<T>& l );
    vector(const vector &  rhs);
@@ -150,47 +150,56 @@ class vector <T> ::iterator
 public:
    // constructors, destructors, and assignment operator
    iterator()                           { this->p = new T; }
-   iterator(T* p)                       { this->p = new T; }
-   iterator(const iterator& rhs)        { this->p = new T; }
-   iterator(size_t index, vector<T>& v) { this->p = new T; }
+   iterator(T* p)                       { this->p = p; }
+   iterator(const iterator& rhs)        { this->p = rhs.p; }
+   iterator(size_t index, vector<T>& v) { this->p = &(v[index]); } //assignment operator taking the location of the element to be refrenced's index? double check this
    iterator& operator = (const iterator& rhs)
    {
-      this->p = new T;
+      this->p = rhs.p;          //assign the value of the itterator to be the given itterator
       return *this;
    }
 
    // equals, not equals operator
-   bool operator != (const iterator& rhs) const { return true; }
-   bool operator == (const iterator& rhs) const { return true; }
+   bool operator != (const iterator& rhs) const { return rhs.p != p; }
+   bool operator == (const iterator& rhs) const { return rhs.p == p; }
 
    // dereference operator
    T& operator * ()
    {
-      return *(new T);
+       T returner = *p;
+      return returner;
    }
 
    // prefix increment
    iterator& operator ++ ()
    {
+       p++;
       return *this;
    }
 
    // postfix increment
    iterator operator ++ (int postfix)
    {
-      return *this;
+       iterator returnCopy(this); //create a copy of the iterator
+       p++; //increment the current pointer (but not the copied one)
+        return returnCopy; //return the copy made before iterating
+        //idk if this is the most elegant solution, if you find a better one feel free to use it.
    }
 
    // prefix decrement
    iterator& operator -- ()
    {
+       p--;
       return *this;
    }
 
    // postfix decrement
    iterator operator -- (int postfix)
    {
-      return *this;
+       iterator returnCopy(this); //create a copy of the iterator
+       p--; //increment the current pointer (but not the copied one)
+       return returnCopy; //return the copy made before iterating
+       //idk if this is the most elegant solution, if you find a better one feel free to use it.
    }
 
 private:
@@ -203,11 +212,11 @@ private:
  * construct each element, and copy the values over
  ****************************************/
 template <typename T>
-vector <T> :: vector()
+vector <T> :: vector() //deafult constructor allocates no memory unless given parameters
 {
-   data = new T[10];
-   numCapacity = 99;
-   numElements = 99;
+   data = nullptr;
+   numCapacity = 0;
+   numElements = 0;
 }
 
 /*****************************************
@@ -218,9 +227,10 @@ vector <T> :: vector()
 template <typename T>
 vector <T> :: vector(size_t num, const T & t) 
 {
-   data = new T[10];
-   numCapacity = 99;
-   numElements = 99;
+   data = new T[num];
+   std::fill(data, data + num, t); //copy the element given into the arrays new locations
+   numCapacity = num;
+   numElements = num;
 }
 
 /*****************************************
@@ -230,9 +240,14 @@ vector <T> :: vector(size_t num, const T & t)
 template <typename T>
 vector <T> :: vector(const std::initializer_list<T> & l) 
 {
-   data = new T[10];
-   numCapacity = 99;
-   numElements = 99;
+    data = new T[l.size()]; //initialize an array the size of the elements given
+    data[1] = 2;
+    numCapacity = l.size();
+    numElements = l.size();
+    for (int i = 0; i < l.size(); i++) {   //fill the array with the given elements
+        data[i] = *(l.begin()+i);
+   }
+ 
 }
 
 /*****************************************
@@ -243,9 +258,9 @@ vector <T> :: vector(const std::initializer_list<T> & l)
 template <typename T>
 vector <T> :: vector(size_t num) 
 {
-   data = new T[10];
-   numCapacity = 99;
-   numElements = 99;
+   data = new T[num];
+   numCapacity = num;
+   numElements = num;
 }
 
 /*****************************************
@@ -256,9 +271,7 @@ vector <T> :: vector(size_t num)
 template <typename T>
 vector <T> :: vector (const vector & rhs) 
 {
-   data = new T[10];
-   numCapacity = 99;
-   numElements = 99;
+    *this = rhs; //simply copy all values into this structure, including capacity and elements
 }
 
 /*****************************************
@@ -268,9 +281,15 @@ vector <T> :: vector (const vector & rhs)
 template <typename T>
 vector <T> :: vector (vector && rhs)
 {
-   data = new T[10];
-   numCapacity = 99;
-   numElements = 99;
+    data = rhs.data;
+    rhs.data = nullptr;
+
+    numElements = rhs.numElements;
+    rhs.numElements = 0;
+
+    numCapacity = rhs.numCapacity;
+    rhs.numCapacity = 0;
+
 }
 
 /*****************************************
@@ -281,7 +300,9 @@ vector <T> :: vector (vector && rhs)
 template <typename T>
 vector <T> :: ~vector()
 {
-   
+   /* for (int i = 0; i < numElements; i++) {
+        delete (data + i);
+   }*/
 }
 
 /***************************************
