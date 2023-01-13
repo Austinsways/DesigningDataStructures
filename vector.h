@@ -352,13 +352,16 @@ void vector <T> :: resize(size_t newElements, const T & t)
 template <typename T>
 void vector <T> :: reserve(size_t newCapacity)
 {
-    T* oldBuffer = data;
-    T* newBuffer = new T[newCapacity];
-    for (int i = 0; i < numElements; i++) {
-        newBuffer[i] = data[i];
-    }
+    //only reserve space if were reserving more space.
+    if (newCapacity > numCapacity) {
+        T* oldBuffer = data;
+        T* newBuffer = new T[newCapacity];
+        for (int i = 0; i < numElements; i++) {
+            newBuffer[i] = data[i];
+        }
 
-   numCapacity = newCapacity;
+        numCapacity = newCapacity;
+    }
 }
 
 /***************************************
@@ -474,8 +477,19 @@ vector <T> & vector <T> :: operator = (const vector & rhs)
 template <typename T>
 vector <T>& vector <T> :: operator = (vector&& rhs)
 {
+    for (int i = 0; i < rhs.numElements; i++)
+    {
+        data[i] = rhs.data[i];
+    }
+    numCapacity = rhs.numCapacity;
+    numElements = rhs.numElements;
 
-   return *this;
+
+    //since were taking this from a move operator, we destroy the previous information
+    rhs.data = nullptr;
+    rhs.numCapacity = 0;
+    rhs.numElements = 0;
+    return *this;
 }
 
 
