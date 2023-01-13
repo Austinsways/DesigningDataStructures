@@ -271,7 +271,14 @@ vector <T> :: vector(size_t num)
 template <typename T>
 vector <T> :: vector (const vector & rhs) 
 {
-    *this = rhs; //simply copy all values into this structure, including capacity and elements
+    data = new T[rhs.numCapacity];
+    numCapacity = rhs.numCapacity;
+    numElements = rhs.numElements;
+    for (int i = 0; i < rhs.numElements; i++)
+    {
+        data[i] = rhs.data[i];
+    }
+     //simply copy all values into this structure, including capacity and elements
 }
 
 /*****************************************
@@ -396,7 +403,13 @@ T & vector <T> :: operator [] (size_t index)
 template <typename T>
 const T & vector <T> :: operator [] (size_t index) const
 {
-   return *(new T);
+    if (index < numCapacity) {
+
+
+        return data[index];
+    }
+   
+   
 }
 
 /*****************************************
@@ -472,6 +485,13 @@ template <typename T>
 vector <T> & vector <T> :: operator = (const vector & rhs)
 {
    
+    resize(rhs.numElements);
+    for (int i = 0; i < rhs.numElements; i++)
+    {
+        this->data[i] = rhs.data[i];
+    }
+    //cpacity does not change in the typical assignment operator, only elements.
+    numElements = rhs.numElements;
    return *this;
 }
 template <typename T>

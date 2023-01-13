@@ -4,4 +4,5 @@ C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h
 C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(167,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'int *' of greater size
 C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(201,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'int *' of greater size
 C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(170): warning C4172: returning address of local variable or temporary: returner
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(413): warning C4715: 'custom::vector<int>::operator[]': not all control paths return a value
   LabVector.vcxproj -> C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\x64\Debug\LabVector.exe
