@@ -300,9 +300,9 @@ vector <T> :: vector (vector && rhs)
 template <typename T>
 vector <T> :: ~vector()
 {
-   /* for (int i = 0; i < numElements; i++) {
-        delete (data + i);
-   }*/
+
+    delete[] data;
+    data = nullptr;
 }
 
 /***************************************
@@ -315,13 +315,30 @@ vector <T> :: ~vector()
 template <typename T>
 void vector <T> :: resize(size_t newElements)
 {
-   
+    if (newElements > numElements) { //if were adding elements
+        reserve(newElements);
+       
+  }
+    else if (newElements < numElements) {
+        
+    }
+    numElements = newElements;
 }
 
 template <typename T>
 void vector <T> :: resize(size_t newElements, const T & t)
 {
-   
+    if (newElements > numElements) { //if were adding elements
+        reserve(newElements);
+        /*for (int i = numElements; i < newElements; i++) {
+            data[i] = t;
+        }*/    //implement after reserve() function
+
+    }
+    else if (newElements < numElements) {
+
+    }
+    numElements = newElements;
 }
 
 /***************************************
@@ -335,7 +352,13 @@ void vector <T> :: resize(size_t newElements, const T & t)
 template <typename T>
 void vector <T> :: reserve(size_t newCapacity)
 {
-   numCapacity = 99;
+    T* oldBuffer = data;
+    T* newBuffer = new T[newCapacity];
+    for (int i = 0; i < numElements; i++) {
+        newBuffer[i] = data[i];
+    }
+
+   numCapacity = newCapacity;
 }
 
 /***************************************
