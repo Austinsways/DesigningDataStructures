@@ -3,6 +3,24 @@ C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h
 C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(151,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'int *' of greater size
 C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(167,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'int *' of greater size
 C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(201,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'int *' of greater size
-C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(170): warning C4172: returning address of local variable or temporary: returner
-C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(413): warning C4715: 'custom::vector<int>::operator[]': not all control paths return a value
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(71,1): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(66): message : while compiling class template member function 'void custom::vector<int>::swap(custom::vector<int> &)'
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(1176): message : see reference to function template instantiation 'void custom::vector<int>::swap(custom::vector<int> &)' being compiled
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(134): message : see reference to class template instantiation 'custom::vector<int>' being compiled
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(75,1): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(364,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(361): message : while compiling class template member function 'void custom::vector<int>::resize(size_t,const T &)'
+          with
+          [
+              T=int
+          ]
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(497): message : see reference to function template instantiation 'void custom::vector<int>::resize(size_t,const T &)' being compiled
+          with
+          [
+              T=int
+          ]
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(347,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(344): message : while compiling class template member function 'void custom::vector<int>::resize(size_t)'
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\testVector.h(472): message : see reference to function template instantiation 'void custom::vector<int>::resize(size_t)' being compiled
+C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\vector.h(444): warning C4715: 'custom::vector<int>::operator[]': not all control paths return a value
   LabVector.vcxproj -> C:\Users\austi\OneDrive\Desktop\Designing DataStructures\Repository\x64\Debug\LabVector.exe
