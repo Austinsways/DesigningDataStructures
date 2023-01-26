@@ -45,13 +45,12 @@ public:
       pPrev = nullptr;
       pNext = nullptr;
    }
-   Node(const T &  data)
+   Node(const T &  data) : data(data)
    {
-       this->data = data;
-       pPrev = nullptr;
-       pNext = nullptr;
+       this->pPrev = nullptr;
+       this->pNext = nullptr;
    }
-   Node(      T && data)
+   Node(      T && data) : data(data)
    {
        this->data = data;
        pPrev = nullptr;
@@ -78,27 +77,33 @@ public:
 template <class T>
 inline Node <T> * copy(const Node <T> * pSource) 
 {
-    if (pSource != nullptr) {
-        Node<T>* pDestination = new Node<T>(pSource->data);
-
-        //creating a copy of pSource we can modify
-        Node<T>* pSrc = new Node<T>;
-        pSrc->data = pSource->data;
-        pSrc->pNext = pSource->pNext;
-        pSrc->pPrev = pSource->pPrev;
-
-        Node<T>* pDes = pDestination; //we can iterate through this without losing the start of it.
-
-        while (pSrc->pNext) {
-            insert(pDes, pSrc->data, true);
-            pSrc = pSrc->pNext;
-            pDes = pDes->pNext;
-        }
-        return pDestination;
-    }
-    else {
-        return nullptr;
-    }
+   Node<T>* pDes = nullptr;
+   if (pSource == nullptr) {
+        return pDes;
+   }
+   else if (pSource->pNext==nullptr) {
+       pDes = new Node<T>(pSource->data);
+       return pDes;
+   }
+   
+   if (pSource->pNext != nullptr) {
+       Node<T>* pSrc = pSource->pNext->pPrev;
+       Node<T>* pStart = new Node<T>(pSrc->data);
+       pDes = pStart;
+       pSrc = pSrc->pNext;
+       while (pSrc!=nullptr)
+       {
+           pDes->pNext = new Node<T>(pSrc->data);
+           pDes->pNext->pPrev = pDes;
+           pDes = pDes->pNext;
+           pSrc = pSrc->pNext;
+           
+       }
+       return pStart;
+   }
+   
+   return pDes;
+    
 }
 
 /***********************************************
@@ -112,7 +117,94 @@ inline Node <T> * copy(const Node <T> * pSource)
 template <class T>
 inline void assign(Node <T> * & pDestination, const Node <T> * pSource)
 {
-   
+    
+    if (pSource == nullptr) {
+        if (pDestination != nullptr) {
+            while (pDestination->pNext != nullptr)
+            {
+                pDestination = pDestination->pNext;
+                delete pDestination->pPrev;
+            }
+            Node<T>* deleteableData = pDestination;
+            pDestination = nullptr;
+            delete deleteableData;
+        }
+    }
+    else {
+        Node<T>* pSrc = nullptr;
+        Node<T>* pDesPrevious = nullptr;
+       /* pSrc = new Node<T>(pSource->data);
+        pSrc->pNext = pSource->pNext;
+        pSrc->pPrev = pSource->pPrev;*/
+        Node<T>* pDes = pDestination;
+        
+        //we do the first step with the constant variable.
+        if (pDes != nullptr) {
+            pDes->data = pSource->data;
+            pDes = pDes->pNext;
+            pSrc = pSource->pNext;
+            while (pDes != nullptr && pSrc != nullptr) { //itterate through the lists until on of them ends
+
+                pDes->data = pSrc->data;
+                if (pDes->pNext == nullptr) {
+                    pDesPrevious = pDes;
+                }
+                pDes = pDes->pNext;
+                pSrc = pSrc->pNext;
+            }
+        }
+        else {
+            if (pSource != nullptr) {
+                pSrc = pSource->pNext->pPrev;
+            }
+        }
+        if (pSrc != nullptr) {  //if the destination list ended first.
+            pDes = pDesPrevious;
+
+            if (pSrc == nullptr) {
+                pSrc = pSource->pNext->pPrev;
+            }
+            if (pDes == nullptr && pSrc != nullptr) {
+                pDestination = new Node<T>(pSrc->data);
+                pDes = pDestination;
+                pSrc = pSrc->pNext;
+            }
+
+            while (pSrc != nullptr) {
+                Node<T>* freshNode = new Node<T>(pSrc->data);
+                pDes->pNext = freshNode;
+                freshNode->pPrev = pDes;
+                pSrc = pSrc->pNext;
+                pDes = pDes->pNext;
+            }
+        }
+
+        else if (pDes != nullptr) { //if the source list ended first
+
+            Node<T>* pDeleter = pDes;
+            pDes = pDes->pPrev;
+            while (pDeleter->pNext != nullptr) {
+                pDeleter = pDeleter->pNext;
+            }
+            while (pDeleter != pDes) {
+                pDeleter = pDeleter->pPrev;
+                delete pDeleter->pNext;
+            }
+            pDes->pNext = nullptr;
+           /* bool setToNull = false;
+
+            if (pDes->pPrev != nullptr) {
+                pDes->pPrev->pNext = nullptr;
+            }
+            else {
+                setToNull = true;
+            }
+
+            if (setToNull) {
+                pDes = nullptr;
+            }*/
+        }
+    }
 }
 
 /***********************************************
@@ -155,7 +247,7 @@ inline Node <T>* insert(Node <T>* pCurrent,
     const T& t,
     bool after = false)
 {
-    Node<T>* freshNode = new Node<T>; //fresh node to insert
+    Node<T>* freshNode = new Node<T>(t); //fresh node to insert
     if (pCurrent != nullptr && after == false) { //place a new node with the intialized value into the last, and replace the next and previous pointers of the corresponding nodes.
        
         freshNode->data = t;
@@ -167,15 +259,15 @@ inline Node <T>* insert(Node <T>* pCurrent,
             freshNode->pPrev->pNext = freshNode;
         }
     }
-    if (pCurrent != nullptr && after == true) { //if the items to be placed after makie the pNext nullptr
-        freshNode->data = t;
+    else if (pCurrent != nullptr && after == true) { //if the items to be placed after make the pNext the old pNext of the Current node
+        //freshNode->data = t;
         freshNode->pPrev = pCurrent;
-        freshNode->pNext = nullptr;
+        freshNode->pNext = pCurrent->pNext;
         pCurrent->pNext = freshNode;
+        if (freshNode->pNext != nullptr) {
+            freshNode->pNext->pPrev = freshNode;
+        }
         
-    }
-    if (!freshNode) {
-        freshNode->data = T();
     }
     return freshNode;
 
