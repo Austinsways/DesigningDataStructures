@@ -1,0 +1,6 @@
+﻿  testNode.cpp
+C:\Users\jaker\OneDrive\Documents\GitHub\DesigningDataStructures\week04\testNode.h(82,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+C:\Users\jaker\OneDrive\Documents\GitHub\DesigningDataStructures\week04\testNode.h(83,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+C:\Users\jaker\OneDrive\Documents\GitHub\DesigningDataStructures\week04\testNode.h(103,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+C:\Users\jaker\OneDrive\Documents\GitHub\DesigningDataStructures\week04\testNode.h(104,1): warning C4312: 'type cast': conversion from 'unsigned int' to 'Node<Spy> *' of greater size
+  LabLinkedList.vcxproj -> C:\Users\jaker\OneDrive\Documents\GitHub\DesigningDataStructures\week04\x64\Debug\LabLinkedList.exe
