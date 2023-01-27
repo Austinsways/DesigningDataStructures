@@ -62,23 +62,19 @@ public:
 
    stack <T> & operator = (const stack <T> & rhs)
    {
-      this->container.resize(rhs.container.size());
       this->container = rhs.container;
       return *this;
    }
    stack <T>& operator = (stack <T> && rhs)
    {
-       this->container.resize(rhs.container.size());
-       this->container = rhs.container;
+       
+       this->container = std::move(rhs.container);
        return *this;
    }
 
    void swap(stack <T>& rhs)
    {
-       stack temp;
-       temp = *this;
-       this->container = rhs.container;
-       rhs.container = temp.container;
+       this->container.swap(rhs.container);
    }
 
    // 
@@ -93,7 +89,7 @@ public:
    // 
 
    void push(const T& t) { container.push_back(t); }
-   void push(      T&& t) { container.push_back(t); }
+   void push(      T&& t) { container.push_back(std::move(t)); }
 
    //
    // Remove
@@ -101,7 +97,8 @@ public:
 
    void pop() 
    { 
-      
+       if( container.size() > 0)
+           container.pop_back();
    }
 
    //
